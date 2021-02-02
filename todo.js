@@ -3,7 +3,18 @@ const todoForm = document.querySelector(".js-todoForm"),
     todoList = document.querySelector(".js-todoList");
 
 const TODOS_LS = "toDos"
-const toDos  = [];
+let toDos  = [];
+
+function deleteToDo(event) {
+    const btn = event.target;
+    const li = btn.parentNode;
+    todoList.removeChild(li);
+    const cleanToDos = toDos.filter(function(toDo){
+        return toDo.id != li.id;
+    });
+    toDos = cleanToDos;
+    saveToDos();
+}
 
 function saveToDos() {
     localStorage.setItem(TODOS_LS, JSON.stringify(toDos));
@@ -13,6 +24,8 @@ function paintToDo(text) {
     const li = document.createElement("li");
     const delBtn = document.createElement("button");
     delBtn.innerText = "❌";
+    delBtn.addEventListener("click", deleteToDo);
+
     const span = document.createElement("span");
     const newId = toDos.length + 1;
     span.innerText = text;
